@@ -2,9 +2,9 @@
 import sys
 import os
 import numpy as np
-from models.f0_to_target_convertor import freq2cents, cents2freq
+from .models.f0_to_target_convertor import freq2cents, cents2freq
 import time as timeModule
-from models.load_model import load_model, get_infos_from_tag
+from .models.load_model import load_model, get_infos_from_tag
 import re
 
 
@@ -453,13 +453,13 @@ if __name__ == '__main__':
         model_input_size = int(model.layers[0].input.shape[1])  # get the input size required by the model
     else:
         if(model_input_size == 1953):
-            from models.FCN_1953.core import build_model
+            from .models.FCN_1953.core import build_model
             model = build_model(weightsFile=weightsFile, inputSize=1953, training=False)
         elif(model_input_size == 993):
-            from models.FCN_993.core import build_model
+            from .models.FCN_993.core import build_model
             model = build_model(weightsFile=weightsFile, inputSize=993, training=False)
         elif(model_input_size == 929):
-            from models.FCN_929.core import build_model
+            from .models.FCN_929.core import build_model
             model = build_model(weightsFile=weightsFile, inputSize=929, training=False)
         else:
             raise("You need to either provide a prebuilt model file in json format with -m ; or give the expected minimum input size of the model (either 1953, 993, or 929 for the provided models).")
@@ -483,11 +483,11 @@ if __name__ == '__main__':
 
         # build and load model :
         if(model_input_size == 1953):
-            from models.FCN_1953.core import build_model
+            from .models.FCN_1953.core import build_model
         elif(model_input_size == 993):
-            from models.FCN_993.core import build_model
+            from .models.FCN_993.core import build_model
         elif(model_input_size == 929):
-            from models.FCN_929.core import build_model
+            from .models.FCN_929.core import build_model
         model = build_model(weightsFile=weightsFile, inputSize=audioLen, training=False)
 
         # run prediction :

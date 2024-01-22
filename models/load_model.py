@@ -14,19 +14,19 @@ def load_model(modelName, from_json = False, FULLCONV = True):
         modelFile = os.path.join(modelDir, 'model.json')
         weightsFile = os.path.join(modelDir, 'weights.h5')
         inputSize = 929
-        from models.FCN_929.core import build_model
+        from .FCN_929.core import build_model
     elif modelName == '993':
         modelDir = os.path.join(curDir, 'FCN_993')
         modelFile = os.path.join(modelDir, 'model.json')
         weightsFile = os.path.join(modelDir, 'weights.h5')
         inputSize = 993
-        from models.FCN_993.core import build_model
+        from .FCN_993.core import build_model
     elif modelName == '1953':
         modelDir = os.path.join(curDir, 'FCN_1953')
         modelFile = os.path.join(modelDir, 'model.json')
         weightsFile = os.path.join(modelDir, 'weights.h5')
         inputSize = 1953
-        from models.FCN_1953.core import build_model
+        from .FCN_1953.core import build_model
     elif modelName == 'CREPE':
         modelDir = os.path.join(curDir, 'CREPE-speech')
         modelFile = os.path.join(modelDir, 'model.json')
