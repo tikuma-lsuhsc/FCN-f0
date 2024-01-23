@@ -155,9 +155,8 @@ def get_activation(audio, model, step_size=10, inputSize = 993, model_srate = 80
 
 def predict_frameWise(audio, model, model_input_size = 993, viterbi=False, step_size=10, model_srate = 8000., modelTag=993):
     activation = get_activation(audio, model, step_size=step_size, inputSize = model_input_size, model_srate = model_srate)
+    activation = activation[:, 0, 0, :]
     confidence = activation.max(axis=1)
-    activation = np.reshape(activation, (np.shape(activation)[0], np.shape(activation)[3]))
-    confidence = np.reshape(confidence, (np.shape(confidence)[0], np.shape(confidence)[2]))
 
     if viterbi:
         cents = to_viterbi_cents(activation)
