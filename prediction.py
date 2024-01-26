@@ -100,10 +100,10 @@ def to_viterbi_cents(salience, vecSize=486, smoothing_factor=12, modelTag=993):
 
     if(modelTag=='CREPE'):
         return np.array([to_local_average_cents_CREPE(salience[i, :], path[i]) for i in
-                         range(len(observations))])
+                         range(len(observations))]), path
     else:
         return np.array([to_local_average_cents(salience[i, :], path[i]) for i in
-                         range(len(observations))])
+                         range(len(observations))]), path
 
 
 def get_global_pooling_factor(model):
@@ -118,12 +118,13 @@ def get_global_pooling_factor(model):
 
 def predict_fullConv(model, audio, viterbi=False, model_srate = 8000):
     activations = model.predict(audio, verbose=1)
-    confidence = activations.max(axis=3)[0,:,0]
     activations = np.reshape(activations, (np.shape(activations)[1], np.shape(activations)[3]))
 
     if (viterbi):
-        cents = to_viterbi_cents(activations)
+        cents, path = to_viterbi_cents(activations)
+        confidence = activations[range(len(path)),path]
     else:
+        confidence = activations.max(axis=1)
         cents = []
         for act in activations:
             cents.append(to_local_average_cents(act))
@@ -156,11 +157,12 @@ def get_activation(audio, model, step_size=10, inputSize = 993, model_srate = 80
 def predict_frameWise(audio, model, model_input_size = 993, viterbi=False, step_size=10, model_srate = 8000., modelTag=993):
     activation = get_activation(audio, model, step_size=step_size, inputSize = model_input_size, model_srate = model_srate)
     activation = activation[:, 0, 0, :]
-    confidence = activation.max(axis=1)
 
     if viterbi:
-        cents = to_viterbi_cents(activation)
+        cents, path = to_viterbi_cents(activation)
+        confidence = activation[range(len(path)),path]
     else:
+        confidence = activation.max(axis=1)
         if(modelTag=='CREPE'):
             cents = to_local_average_cents_CREPE(activation)
         else:
